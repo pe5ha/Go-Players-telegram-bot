@@ -31,7 +31,7 @@ function startCommand(payload=null){
 
     }
   }
-  if(user_ogs_id==""){ // TODO
+  if(user_ogs_id==""){ // TODO ogs id
     botSendText(chat_id,bot_greetings);
   }
   else {
