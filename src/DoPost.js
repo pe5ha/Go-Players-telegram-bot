@@ -1,5 +1,17 @@
 
+
+
+
 function doPost(e) {
+  try{
+    entryPoint(e);
+  }
+  catch (e) {
+    botSendText(235733832,e);
+  }
+}
+
+function entryPoint(e){
 
   if (debugEnable) {
     logDebug(e);
