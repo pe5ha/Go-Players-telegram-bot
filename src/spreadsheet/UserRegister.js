@@ -7,15 +7,14 @@
  */
 function userRegister(id) {
   // поиск юзера в списке уже существующих
-  tUsers = table.getSheetByName(UsersSheet);
+  let tUsers = table.getSheetByName(UsersSheet.SheetName);
   if(tUsers == null) { // если такого листа нет
-    table.insertSheet(UsersSheet); // то такой лист создаётся
-    tUsers = table.getSheetByName(UsersSheet);
-    let titles = [["время",	"id",	"ник",	"имя",	"current action"]];
+    table.insertSheet(UsersSheet.SheetName); // то такой лист создаётся
+    tUsers = table.getSheetByName(UsersSheet.SheetName);
     let style = SpreadsheetApp.newTextStyle().setBold(true).setItalic(true).build();
-    tUsers.getRange(1,1,1,titles[0].length).setValues(titles).setTextStyle(style).setHorizontalAlignment("center");
+    tUsers.getRange(1,1,1,UsersSheet.getColumnsOrder().length).setValues([UsersSheet.getColumnsOrder()]).setTextStyle(style).setHorizontalAlignment("center");
   }
-  let usersData = tUsers.getRange('A:D').getValues(); // массив всех значений id
+  usersData = tUsers.getRange('A:F').getValues(); // массив всех значений id
   let row = -1;
   let i;
   for (i = 0; i < usersData.length; i++) { // цикл от 0 до сколько всего юзеров
@@ -27,9 +26,10 @@ function userRegister(id) {
 
   // добавление юзера
   if (row === -1) { // если юзер с таким id не записан, то регистрируем его
-    let userData = [[Utilities.formatDate(new Date(), "GMT+3", "dd.MM.yyyy HH:mm:ss"),user_id,nick,name]]; // массив данных пользователя
+    user = makeUser(2,user_id,nick,name,UserCurrentActions.input_OGS_id);
+    let userData = [[stringDate(),user.telegramID,user.nick,user.name,user.currentAction,user.role]]; // массив данных пользователя
     // userData[0].push(surname); // фамилия
-
+    
     tUsers.insertRowBefore(2); // в лист юзеров вставляется новая строка сверху (после заголовков)
     tUsers.getRange(2, 1, 1, userData[0].length).setValues(userData); // вставка инфы юзера
 
@@ -45,12 +45,20 @@ function userRegister(id) {
     return true;
   }
   else { //апдейт данных о пользователе, которые могли измениться
-    if (usersData[i][1] !== nick) {
-      tUsers.getRange(row, 3).setValue(nick);
+    if (usersData[i][UsersSheet.getCol(UsersSheet.nick_Title)] !== nick) {
+      tUsers.getRange(row, UsersSheet.getCol(UsersSheet.nick_Title)+1).setValue(nick);
     }
-    if (usersData[i][2] !== name) {
-      tUsers.getRange(row, 4).setValue(name);
+    if (usersData[i][UsersSheet.getCol(UsersSheet.name_Title)] !== name) {
+      tUsers.getRange(row, UsersSheet.getCol(UsersSheet.name_Title)+1).setValue(name);
     }
+    user = makeUser(
+      row,
+      user_id,
+      nick,
+      usersData[i][UsersSheet.getCol(UsersSheet.name_Title)],
+      usersData[i][UsersSheet.getCol(UsersSheet.current_action_Title)],
+      usersData[i][UsersSheet.getCol(UsersSheet.role_Title)]
+    );
     return false;
   }
 }

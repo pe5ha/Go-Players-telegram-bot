@@ -8,9 +8,8 @@ function logUpdate(action, text) {
   if(tLog == null) { // если такого листа нет
     table.insertSheet(LogSheet); // то такой лист создаётся
     tLog = table.getSheetByName(LogSheet);
-    let titles = [["время",	"id",	"ник",	"имя",	"message_id", "action","что прислал",	"ответ бота"]];
     let style = SpreadsheetApp.newTextStyle().setBold(true).setItalic(true).build();
-    tLog.getRange(1,1,1,titles[0].length).setValues(titles).setTextStyle(style).setHorizontalAlignment("center");
+    tLog.getRange(1,1,1,logTableColumns.length).setValues([logTableColumns]).setTextStyle(style).setHorizontalAlignment("center");
   }
   tLog.insertRowBefore(2);
   let logData = [Utilities.formatDate(new Date(date*1000),"GMT+3","dd.MM.yyyy HH:mm:ss"),user_id,nick,name,message_id,action, text];

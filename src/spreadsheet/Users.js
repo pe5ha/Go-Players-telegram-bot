@@ -1,6 +1,18 @@
+function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null){
+  return {
+    telegramID: telegramID,
+    nick: nick,
+    name: name,
+    currentAction: currentAction,
+    role: role,
+    rowInTable
+  }
+}
 
-
-
+/**
+ * 
+ * @deprecated - is need fix
+ */
 function getUseridByUsername(username) {
   let tUsers = table.getSheetByName("Users");
 
@@ -17,3 +29,8 @@ function getUseridByUsername(username) {
   return null;
 }
 
+
+function setUserRole(user_id,role){
+  let tUsers = table.getSheetByName(UsersSheet.SheetName);
+  tUsers.getRange(user.rowInTable, UsersSheet.getCol(UsersSheet.role_Title)+1).setValue(role);
+}

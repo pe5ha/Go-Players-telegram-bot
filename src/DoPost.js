@@ -6,8 +6,8 @@ function doPost(e) {
   try{
     entryPoint(e);
   }
-  catch (e) {
-    botSendText(235733832,e);
+  catch (err) {
+    botSendText(235733832,err.stack);
   }
 }
 
