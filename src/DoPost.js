@@ -1,6 +1,10 @@
 
-
-
+function debugDoPost(){
+  let tDebug = table.getSheetByName("Debug");
+  let e = tDebug.getRange('C1').getValue();
+  doPost(JSON.parse(e));
+  // d
+}
 
 function doPost(e) {
   try{

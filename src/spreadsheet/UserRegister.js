@@ -26,7 +26,7 @@ function userRegister(id) {
 
   // добавление юзера
   if (row === -1) { // если юзер с таким id не записан, то регистрируем его
-    user = makeUser(2,user_id,nick,name,UserCurrentActions.input_OGS_id);
+    user = makeUser(2,user_id,nick,name,UserCurrentActions.input_OGS_id,null,true);
     let userData = [[stringDate(),user.telegramID,user.nick,user.name,user.currentAction,user.role]]; // массив данных пользователя
     // userData[0].push(surname); // фамилия
     
