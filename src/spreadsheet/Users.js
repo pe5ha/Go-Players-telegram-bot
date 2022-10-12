@@ -1,3 +1,4 @@
+// версия 1
 
 let user = {
   telegramID: null,

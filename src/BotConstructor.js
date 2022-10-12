@@ -1,25 +1,19 @@
 
 /**
- * Bot constructor v0.31
+ * Bot constructor v0.9
  */
 // let token = process.env.BOT_TOKEN;
 let token = PropertiesService.getScriptProperties().getProperty('BOT_TOKEN');
 let SpreadsheetID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
 
-let LogSheet = "Log";
-let DebugSheet = "Debug";
+
 
 //dev
 let debugEnable = true;
 
-// table database
-let usersData; // datebase global variable
+// users data arrays gets from Users sheet
+let usersData; 
 
-
-// let regDateTitle = "reg date";
-// let idTitle = "id";
-let usersTableColumns = ["reg date",	"id",	"nick",	"name",	"current action", "role"];
-let logTableColumns = ["time",	"id",	"nick",	"name",	"message_id", "action","what was sent",	"bot answer"];
 
 // Users sheet structure
 let UsersSheet = {
@@ -36,6 +30,30 @@ let UsersSheet = {
   getCol(columnTitle){
     return this.getColumnsOrder().indexOf(columnTitle);
   }
+}
+
+// Logs sheet structure
+let LogSheet = {
+  SheetName: "Log",
+  time_Title: "time",
+  id_Title: "id",
+  nick_Title: "nick",
+  name_Title: "name",
+  message_id_Title: "message id",
+  action_Title: "action",
+  what_was_sent_Title: "wat was sent",
+  bot_answer_Title: "bot answer",
+  getColumnsOrder(){
+    return [this.time_Title,	this.id_Title,	this.nick_Title,	this.name_Title,	this.message_id_Title, this.action_Title,this.what_was_sent_Title,this.bot_answer_Title];
+  },
+  getCol(columnTitle){
+    return this.getColumnsOrder().indexOf(columnTitle);
+  }
+}
+
+// Debug sheet structure
+let DebugSheet = {
+  SheetName: "Debug",
 }
 
 //User roles

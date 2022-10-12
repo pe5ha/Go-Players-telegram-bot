@@ -1,4 +1,4 @@
-
+// версия 0.1
 
 function groupChatMessage(){
 

@@ -1,4 +1,6 @@
-
+/**
+ * версия 1
+ */
 
 function botSendText(chat_id, textToSend){
   let telegramResp = sendMessage(token, chat_id, textToSend);

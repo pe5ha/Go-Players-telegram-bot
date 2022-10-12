@@ -1,15 +1,16 @@
+// версия 1
 
 /**
  * Логирование всех сообщений, нажатий кнопок и всего прочего приходящего в бота в таблицу
  * @param {String} text - Текст обновления в нужном для таблице виде
  */
 function logUpdate(action, text) {
-  let tLog = table.getSheetByName(LogSheet);
+  let tLog = table.getSheetByName(LogSheet.SheetName);
   if(tLog == null) { // если такого листа нет
-    table.insertSheet(LogSheet); // то такой лист создаётся
-    tLog = table.getSheetByName(LogSheet);
+    table.insertSheet(LogSheet.SheetName); // то такой лист создаётся
+    tLog = table.getSheetByName(LogSheet.SheetName);
     let style = SpreadsheetApp.newTextStyle().setBold(true).setItalic(true).build();
-    tLog.getRange(1,1,1,logTableColumns.length).setValues([logTableColumns]).setTextStyle(style).setHorizontalAlignment("center");
+    tLog.getRange(1,1,1,LogSheet.getColumnsOrder().length).setValues([LogSheet.getColumnsOrder()]).setTextStyle(style).setHorizontalAlignment("center");
   }
   tLog.insertRowBefore(2);
   let logData = [Utilities.formatDate(new Date(date*1000),"GMT+3","dd.MM.yyyy HH:mm:ss"),user_id,nick,name,message_id,action, text];
@@ -31,10 +32,10 @@ function logBotSending(text) {
 }
 
 function logDebug(e){
-  let tDebug = table.getSheetByName(DebugSheet);
+  let tDebug = table.getSheetByName(DebugSheet.SheetName);
   if(tDebug == null) { // если такого листа нет
-    table.insertSheet(DebugSheet); // то такой лист создаётся
-    tDebug = table.getSheetByName(DebugSheet);
+    table.insertSheet(DebugSheet.SheetName); // то такой лист создаётся
+    tDebug = table.getSheetByName(DebugSheet.SheetName);
   }
   tDebug.getRange(1, 3).setValue(JSON.stringify(e, null, 5));
   let contents = JSON.parse(e.postData.contents);

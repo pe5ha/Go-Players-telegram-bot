@@ -1,5 +1,4 @@
-
-
+// версия 1
 
 function callbackQueryReceived(callback_query) {
   user_id = callback_query.from.id;

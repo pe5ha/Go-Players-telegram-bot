@@ -1,5 +1,5 @@
 /**
- * Globals variables
+ * Версия 1
  */
 
 
