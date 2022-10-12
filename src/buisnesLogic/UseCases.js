@@ -1,4 +1,5 @@
 
+// TODO https://www.atlassian.com/git/tutorials/git-submodule for my bot Framework
 
 function useCases(){
 

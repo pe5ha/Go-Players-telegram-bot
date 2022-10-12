@@ -1,6 +1,7 @@
+// версия 1
 
 /**
- * Bot constructor v0.9
+ * Bot constructor
  */
 // let token = process.env.BOT_TOKEN;
 let token = PropertiesService.getScriptProperties().getProperty('BOT_TOKEN');
