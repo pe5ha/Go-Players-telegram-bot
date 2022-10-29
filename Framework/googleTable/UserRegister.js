@@ -5,16 +5,14 @@
  * @param {Number} id - id искомого пользователя
  * @returns false - если такой пользователь уже есть в базе, true - если не было в базе
  */
-function userRegister(id) {
+ function userRegister(id) {
   // поиск юзера в списке уже существующих
-  let tUsers = table.getSheetByName(UsersSheet.SheetName);
-  if(tUsers == null) { // если такого листа нет
-    table.insertSheet(UsersSheet.SheetName); // то такой лист создаётся
-    tUsers = table.getSheetByName(UsersSheet.SheetName);
+  if(tUsers.use() == null) { // если такого листа нет
+    table.insertSheet(tUsers.sheetName); // то такой лист создаётся
     let style = SpreadsheetApp.newTextStyle().setBold(true).setItalic(true).build();
-    tUsers.getRange(1,1,1,UsersSheet.getColumnsOrder().length).setValues([UsersSheet.getColumnsOrder()]).setTextStyle(style).setHorizontalAlignment("center");
+    tUsers.use().getRange(1,1,1,tUsers.getColumnsOrder().length).setValues([tUsers.getColumnsOrder()]).setTextStyle(style).setHorizontalAlignment("center");
   }
-  usersData = tUsers.getRange('A:F').getValues(); // массив всех значений id
+  usersData = tUsers.use().getRange(tUsers.allRange).getValues(); // массив всех значений id
   let row = -1;
   let i;
   for (i = 0; i < usersData.length; i++) { // цикл от 0 до сколько всего юзеров
@@ -26,12 +24,12 @@ function userRegister(id) {
 
   // добавление юзера
   if (row === -1) { // если юзер с таким id не записан, то регистрируем его
-    user = makeUser(2,user_id,nick,name,UserCurrentActions.input_OGS_id,null,true);
+    user = makeUser(2,user_id,nick,name,null,null,null,true);
     let userData = [[stringDate(),user.telegramID,user.nick,user.name,user.currentAction,user.role]]; // массив данных пользователя
     // userData[0].push(surname); // фамилия
     
-    tUsers.insertRowBefore(2); // в лист юзеров вставляется новая строка сверху (после заголовков)
-    tUsers.getRange(2, 1, 1, userData[0].length).setValues(userData); // вставка инфы юзера
+    tUsers.use().insertRowBefore(2); // в лист юзеров вставляется новая строка сверху (после заголовков)
+    tUsers.use().getRange(2, 1, 1, userData[0].length).setValues(userData); // вставка инфы юзера
 
     // создание индивидуального листа, привязанного к id юзера
     //   let tPersonSheet = table.getSheetByName(""+id); // открытие листа, если он уже есть
@@ -41,23 +39,24 @@ function userRegister(id) {
     //   }
     // добавление ссылки на личный лист в списке юзеров
     //   let richText = SpreadsheetApp.newRichTextValue().setText("Таблица " + name).setLinkUrl("#gid=" + tPersonSheet.getSheetId()).build(); // создание ссылки на личный лист
-    //   tUsers.getRange(2,userData.length+1).setRichTextValue(richText); // запись в нужную ячейку на листе юзеров
+    //   tUsers.use().getRange(2,userData.length+1).setRichTextValue(richText); // запись в нужную ячейку на листе юзеров
     return true;
   }
   else { //апдейт данных о пользователе, которые могли измениться
-    if (usersData[i][UsersSheet.getCol(UsersSheet.nick_Title)] !== nick) {
-      tUsers.getRange(row, UsersSheet.getCol(UsersSheet.nick_Title)+1).setValue(nick);
+    if (usersData[i][tUsers.getCol(tUsers.nick_Title)] !== nick) {
+      tUsers.use().getRange(row, tUsers.getCol(tUsers.nick_Title)+1).setValue(nick);
     }
-    if (usersData[i][UsersSheet.getCol(UsersSheet.name_Title)] !== name) {
-      tUsers.getRange(row, UsersSheet.getCol(UsersSheet.name_Title)+1).setValue(name);
+    if (usersData[i][tUsers.getCol(tUsers.name_Title)] !== name) {
+      tUsers.use().getRange(row, tUsers.getCol(tUsers.name_Title)+1).setValue(name);
     }
     user = makeUser(
       row,
       user_id,
       nick,
-      usersData[i][UsersSheet.getCol(UsersSheet.name_Title)],
-      usersData[i][UsersSheet.getCol(UsersSheet.current_action_Title)],
-      usersData[i][UsersSheet.getCol(UsersSheet.role_Title)]
+      usersData[i][tUsers.getCol(tUsers.name_Title)],
+      usersData[i][tUsers.getCol(tUsers.current_action_Title)],
+      usersData[i][tUsers.getCol(tUsers.role_Title)],
+      usersData[i][tUsers.getCol(tUsers.tariff_Title)],
     );
     return false;
   }

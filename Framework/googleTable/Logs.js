@@ -4,7 +4,8 @@
  * Логирование всех сообщений, нажатий кнопок и всего прочего приходящего в бота в таблицу
  * @param {String} text - Текст обновления в нужном для таблице виде
  */
-function logUpdate(action, text) {
+ function logUpdate(action, text) {
+  if(doNotLog) return;
   let tLog = table.getSheetByName(LogSheet.SheetName);
   if(tLog == null) { // если такого листа нет
     table.insertSheet(LogSheet.SheetName); // то такой лист создаётся
@@ -13,7 +14,8 @@ function logUpdate(action, text) {
     tLog.getRange(1,1,1,LogSheet.getColumnsOrder().length).setValues([LogSheet.getColumnsOrder()]).setTextStyle(style).setHorizontalAlignment("center");
   }
   tLog.insertRowBefore(2);
-  let logData = [Utilities.formatDate(new Date(date*1000),"GMT+3","dd.MM.yyyy HH:mm:ss"),user_id,nick,name,message_id,action, text];
+  let logdate = date ? stringDate(date*1000) : stringDate();
+  let logData = [logdate,user_id,nick,name,message_id,action, text];
   tLog.getRange(2,1,1,logData.length).setValues([logData]);
 }
 
@@ -22,16 +24,19 @@ function logUpdate(action, text) {
  * @param {String} text - Текст обновления в нужном для таблице виде
  */
 function logBotSending(text) {
-  let tLog = table.getSheetByName(LogSheet);
+  if(doNotLogBotSending) return;
+  let tLog = table.getSheetByName(LogSheet.SheetName);
   if(!tLog) return;
 
   tLog.insertRowBefore(2);
-  let logData = [[Utilities.formatDate(new Date(date*1000),"GMT+3","dd.MM.yyyy HH:mm:ss"),chat_id,nick,name,"","","",text]];
+  let logdate = date ? stringDate(date*1000) : stringDate();
+  let logData = [[logdate,chat_id,nick,name,"","","",text]];
   // TODO chat_id заменить на имя ЧАТА (групповой чат или диалог)
   tLog.getRange(2,1,1,logData[0].length).setValues(logData);
 }
 
 function logDebug(e){
+  if(doNotLogDebug) return;
   let tDebug = table.getSheetByName(DebugSheet.SheetName);
   if(tDebug == null) { // если такого листа нет
     table.insertSheet(DebugSheet.SheetName); // то такой лист создаётся

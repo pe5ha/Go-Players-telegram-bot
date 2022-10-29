@@ -6,7 +6,7 @@
 
 function debugDoPost(){
   let tDebug = table.getSheetByName("Debug");
-  let e = tDebug.getRange('C1').getValue();
+  let e = tDebug.getRange('D1').getValue();
   doPost(JSON.parse(e));
   // d
 }
@@ -22,9 +22,7 @@ function doPost(e) {
 
 function entryPoint(e){
 
-  if (debugEnable) {
-    logDebug(e);
-  }
+  logDebug(e);
   
   let contents = JSON.parse(e.postData.contents);
 
@@ -33,7 +31,7 @@ function entryPoint(e){
   }
 
   else if (contents.callback_query != null) {
-    CallbackQueryReceived(contents.callback_query);
+    callbackQueryReceived(contents.callback_query);
   }
 
   else if (contents.edited_message != null) {

@@ -6,8 +6,17 @@ function messageReceived(message) {
   name = message.from.first_name + (message.from.last_name ? " " + message.from.last_name : "");
   nick = (message.from.username ? "@" + message.from.username : "");
   date = message.date;
-  text = message.text;
+  
   message_id = message.message_id;
+
+  if(message.text) text = message.text;
+  else if(message.video) text = message.caption;
+  else if(message.photo) text = message.caption;
+  else if(message.audio) text = message.caption;
+  else if(message.document) text = message.caption;
+  else if(message.voice) text = message.caption;
+  if(!text) text = "";
+
 
   logUpdate("Сообщение: ",text);
 
@@ -16,6 +25,6 @@ function messageReceived(message) {
     directMessage();
   }
   else { // сообщения в групповых чатах (и каналах ?)
-    groupChatMessage();
+    groupChatMessage(message);
   }
 }
