@@ -5,6 +5,7 @@ function editMessageReceived(edited_message){
   user_id = edited_message.from.id;
   name = edited_message.from.first_name + (edited_message.from.last_name ? " " + edited_message.from.last_name : "");
   nick = (edited_message.from.username ? "@" + edited_message.from.username : "");
+  language_code = edited_message.from.language_code;
   date = edited_message.date;
   let edit_date = edited_message.edit_date;
   text = edited_message.text;

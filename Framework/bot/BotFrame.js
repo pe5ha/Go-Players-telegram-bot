@@ -10,6 +10,7 @@ let message_id;
 let text = "";
 let data;
 let textToSend;
+let language_code;
 
 // users data arrays gets from Users sheet
 let usersData; 

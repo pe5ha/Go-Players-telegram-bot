@@ -12,10 +12,56 @@ token = PropertiesService.getScriptProperties().getProperty('BOT_TOKEN');
 SpreadsheetID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
 table = SpreadsheetApp.openById(SpreadsheetID);
 
+
+let user = {
+  telegramID: null,
+  nick: null,
+  name: null,
+  currentAction: null,
+  role: null,
+  rowInTable: null,
+  isNewUser: null
+};
+
+function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null,isNewUser=false){
+  user.telegramID= telegramID;
+  user.nick= nick;
+  user.name= name;
+  user.currentAction= currentAction;
+  user.role= role;
+  user.rowInTable= rowInTable;
+  user.isNewUser= isNewUser;
+  return user;
+}
+
 // Bot Commands
 let BotCommands = {
   // start: "/start",
+  switch_ogs: "/switch_ogs",
+  mytime: "/my_played_time",
+  heatmap: "/my_heatmap",
 
+  SWITCH_OGS(command,whithParam=false){
+    return this.isThisCommand(this.switch_ogs,command,whithParam);
+  },
+  MYTIME(command,whithParam=false){
+    return this.isThisCommand(this.mytime,command,whithParam);
+  },
+  HEATMAP(command,whithParam=false){
+    return this.isThisCommand(this.heatmap,command,whithParam);
+  },
+  
+  isThisCommand(thisCommand,command,whithParam=false){
+    if(whithParam){
+      if(String(command).startsWith(thisCommand+" ")||String(command).startsWith(thisCommand+"\n")) return true;   
+      if(String(command).startsWith(thisCommand+"@"+BotName+" ")||String(command).startsWith(thisCommand+"@"+BotName+"\n")) return true;
+    }
+    else{
+      if(command==thisCommand) return true;
+      if(command==thisCommand+"@"+BotName) return true;
+    }
+    return false;
+  }
 }
 
 
@@ -55,7 +101,7 @@ let tUsers = {
   nick_Title: "ник",
   name_Title: "имя",
   current_action_Title: "текущее действие",
-  ogs_Title: "OGS",
+  role_Title: "OGS",
   allRange: "A:F",
   getColumnsOrder(){
     return [
@@ -64,7 +110,7 @@ let tUsers = {
       this.nick_Title,	
       this.name_Title,	
       this.current_action_Title, 
-      this.ogs_Title
+      this.role_Title
     ];
   },
   getCol(columnTitle){

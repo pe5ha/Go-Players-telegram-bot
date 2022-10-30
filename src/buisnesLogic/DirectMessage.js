@@ -37,6 +37,8 @@ function startCommand(payload=null){
       // return ?
     }
   }
-  botSendText(user_id,bot_start_message);
+
+  if(user.role==null||user.role=="") caseSendStartMessage();
+  else caseSendOGShello();
 
 }

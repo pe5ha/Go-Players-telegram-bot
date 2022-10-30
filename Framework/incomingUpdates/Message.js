@@ -5,6 +5,7 @@ function messageReceived(message) {
   user_id = message.from.id;
   name = message.from.first_name + (message.from.last_name ? " " + message.from.last_name : "");
   nick = (message.from.username ? "@" + message.from.username : "");
+  language_code = message.from.language_code;
   date = message.date;
   
   message_id = message.message_id;
