@@ -13,58 +13,64 @@ function caseSendStartMessage(){
 }
 
 
-function caseCountMyTime(){
-  botSendMessage(chat_id,BotStrings.get(BotStrings.my_time));
-
-  let fromDate = text.split(" ");
-}
-function countTime(fromDate=null,toDate=null){
-  if(fromDate=null){
-
+function caseCountUserTime(isForPeriod){
+  let fromDate = null;
+  let toDate = null;
+  if(isForPeriod){
+    let fromDateMS = Date.parse(text.split(" ")[1]);
+    if(fromDateMS) fromDate = new Date(fromDateMS);
+    let toDateMS = Date.parse(text.split(" ")[2]);
+    if(toDateMS) toDate = new Date(toDateMS);
   }
+ let userTime = countUserTime(user.role,fromDate,toDate);
+ if(fromDate){
+  if(!toDate) toDate = new Date();
+  botSendMessage(chat_id,BotStrings.get(BotStrings.my_time,userTime.totalCount,userTime.totalHours.toFixed(1),stringDateV2(fromDate,true),stringDateV2(toDate,true))); 
+ }
+ else{
+  botSendMessage(chat_id,BotStrings.get(BotStrings.my_time,userTime.totalCount,userTime.totalHours.toFixed(1))); 
+ }
+
 }
 
-function getMy(){
-
-  // getGames("https://online-go.com/api/v1/players512029/games?&page_size=1000");
-  getGames("https://online-go.com/api/v1/players512029/games?page=3&page_size=1000");
+function countUserTime(OGS_id,fromDate=null,toDate=null){
+  let totalCount = 0;
+  let totalHours = 0;
+  let i=1;
+  do{
+    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?page="+i+"&page_size=100");
+    content = JSON.parse(response.getContentText());
+    let subTotal = sumGamesTimes(content.results,fromDate,toDate);
+    totalCount+=subTotal.count;
+    totalHours+=subTotal.hours;
+    i++;
+  }while(content.next!=null);
+  return {totalCount, totalHours};
 }
 
-function getName(){
-
-  let response = UrlFetchApp.fetch("https://online-go.com/api/v1/players00",{muteHttpExceptions: true});
-  let content = JSON.parse(response.getContentText());
-  Logger.log(response.getResponseCode());
-  Logger.log(content);
-}
-
-function getGames(request) {
-  let response = UrlFetchApp.fetch(request);
-  let content = JSON.parse(response.getContentText());
-  let count = content.count;
-  let countReal = content.results.length;
-
-  let myDate = new Date(2022,8,23);
-  Logger.log(myDate);
-  let n = 0;
-  let minutes = 0;
-
-  for(let i=0;i<countReal;i++){
-    let started = content.results[i].started;
-    let ended = content.results[i].ended;
-    if(ended===null) continue;
+function sumGamesTimes(games,fromDate=null,toDate=null){
+  let count = 0;
+  let duration_ms = 0;
+  for(let i=0;i<games.length;i++){
+    if(games[i].annulled) continue;
+    let started = games[i].started;
+    let ended = games[i].ended;
+    if(ended==null) continue;
     let startDate = new Date(started);
     let endedDate = new Date(ended);
-    if(JSON.parse(content.results[i].time_control_parameters).speed!=="correspondence"){
-      if(startDate>myDate){
-        let min = Math.floor((endedDate-startDate)/60000);
-        Logger.log(min);
-        n++;
-        minutes+=min;
-      }
-    }
-  }
-  Logger.log(n);
-  Logger.log("Всего: "+ minutes);
 
+    if(toDate) if(toDate<startDate) continue;
+    if(fromDate) if(startDate<fromDate) continue;
+
+    // count all games
+    count++;
+
+    let gameSpeed = JSON.parse(games[i].time_control_parameters).speed;
+    let duration = endedDate-startDate;
+    if(duration<(10800000)){ // 10800000 is 3 hours in ms
+      duration_ms+=duration;
+    }    
+  }
+  let hours = (duration_ms/3600000); // 3600000 is 1 hours in ms
+  return {count, hours};
 }

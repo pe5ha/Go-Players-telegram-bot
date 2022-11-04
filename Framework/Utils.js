@@ -1,7 +1,22 @@
 
-function stringDate(timestamp=null){
-  if(timestamp) return Utilities.formatDate(new Date(timestamp), "GMT+3", "dd.MM.yyyy HH:mm:ss");
-  else return Utilities.formatDate(new Date(), "GMT+3", "dd.MM.yyyy HH:mm:ss");
+function stringDate(timestamp=null, beOnlyDate=false, gmt="GMT+3"){
+  if(beOnlyDate){
+    if(timestamp) return Utilities.formatDate(new Date(timestamp), gmt, "dd.MM.yyyy");
+    else return Utilities.formatDate(new Date(), gmt, "dd.MM.yyyy");
+  }
+  else {
+    if(timestamp) return Utilities.formatDate(new Date(timestamp), gmt, "dd.MM.yyyy HH:mm:ss");
+    else return Utilities.formatDate(new Date(), gmt, "dd.MM.yyyy HH:mm:ss");
+  }
+}
+
+function stringDateV2(date, beOnlyDate=false, gmt="GMT+3"){
+  if(beOnlyDate){
+    return Utilities.formatDate(date, gmt, "dd.MM.yyyy");
+  }
+  else {
+    return Utilities.formatDate(date, gmt, "dd.MM.yyyy HH:mm:ss");
+  }
 }
 
 function getFirstEmptyRow(range){
@@ -30,3 +45,5 @@ function findRowIn2dRange(array,column,value){
   }
   return -1;
 }
+
+function makeTimeObj(){}

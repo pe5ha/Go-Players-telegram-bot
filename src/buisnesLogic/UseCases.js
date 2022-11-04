@@ -2,27 +2,25 @@
 function useCases(){
 
 
-  // input OGS id
+  // first input OGS id
   if(user.currentAction==UserActions.input_OGS_id||user.role==null||user.role==""){ 
     caseInputOGSid();
   } 
-  // OGS setted
+  // OGS features
   else if(user.currentAction==UserActions.without_action){
+    // сменить аккаунт огс
     if(BotCommands.SWITCH_OGS(text)){
       caseSwithOGS();
     }
+    // узнать время между датами
     else if(BotCommands.MYTIME(text,true)){
-      // whith param
-      caseCountMyTime(); 
+      caseCountUserTime(true); 
     }
+    // узнать всё время
     else if(BotCommands.MYTIME(text)){
-      // total
-      caseCountMyTime(); 
+      caseCountUserTime(false); 
     }
-    // if(text=="/time") //TODO
-    // else{
-    //   caseSendOGShello(); 
-    // }
+    
   }
 
   // otherwise
