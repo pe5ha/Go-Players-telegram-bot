@@ -182,6 +182,19 @@ sendMessageV3(token,chat_id,text,options){
   return sendData(token,data);
 },
 
+sendChatAction(token,chat_id,action){
+  let data={
+    method: "post",
+    payload:{
+      method: "sendChatAction",
+      chat_id: String(chat_id),
+      action: action
+    },
+    muteHttpExceptions: true
+  };
+  return sendData(token,data);
+},
+
 
 sendText(token,chat_id,txt){
   let data={

@@ -11,6 +11,9 @@ function caseSendStartMessage(){
 }
 
 function caseCountUserTime(isForPeriod){
+  let mes = "";
+  mes+= "<code>" + getOGSNick()+"</code> ";
+  TelegramAPI.sendChatAction(token,chat_id,"typing");
   let fromDate = null;
   let toDate = null;
   if(isForPeriod){
@@ -20,8 +23,7 @@ function caseCountUserTime(isForPeriod){
     if(toDateMS) toDate = new Date(toDateMS);
   }
  let userTime = countUserTime(user.role,fromDate,toDate);
- let mes = "";
- mes+= "<code>" + getOGSNick()+"</code> ";
+ 
  if(fromDate){
   if(!toDate) toDate = new Date();
   mes += BotStrings.get(BotStrings.my_time,userTime.totalCount,userTime.totalHours.toFixed(1),stringDateV2(fromDate,true),stringDateV2(toDate,true)); 
@@ -33,7 +35,7 @@ function caseCountUserTime(isForPeriod){
 }
 
 function caseSendHeatMap(){
-
+  TelegramAPI.sendChatAction(token,chat_id,"typing");
   let fromDate = new Date(); fromDate.setDate(1); fromDate.setMonth(fromDate.getMonth()-1); // previos month beginning 
   let toDate = new Date(fromDate.getTime()); toDate.setMonth(toDate.getMonth()+1); toDate.setDate(toDate.getDate()-1);
   let gamesCount = getGamesCount(user.role,fromDate,toDate); 
