@@ -2,7 +2,7 @@
 
 //dev
 let doNotLogDebug = false;
-let doNotLogBotSending = true;
+let doNotLogBotSending = false;
 let doNotLog = false;
 
 let BotName = "Game_of_Go_bot";
@@ -38,8 +38,8 @@ function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null,
 let BotCommands = {
   // start: "/start",
   switch_ogs: "/switch_ogs",
-  mytime: "/my_played_time",
-  heatmap: "/my_heatmap",
+  mytime: "/playing_time",
+  heatmap: "/heatmap",
 
   SWITCH_OGS(command,whithParam=false){
     return this.isThisCommand(this.switch_ogs,command,whithParam);

@@ -19,6 +19,11 @@ function useCases(){
     // узнать всё время
     else if(BotCommands.MYTIME(text)){
       caseCountUserTime(false); 
+      botSendMessage(chat_id,BotStrings.get(BotStrings.my_time_hint));
+    }
+    // нарисовать heatmap
+    else if(BotCommands.HEATMAP(text)){
+      caseSendHeatMap(); 
     }
     
   }
