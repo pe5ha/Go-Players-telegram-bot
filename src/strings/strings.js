@@ -36,7 +36,7 @@ let BotStringsEng = {
     "\n"+BotCommands.heatmap+" — get games heatmap"+
     "\n\nSettings:\n"+BotCommands.switch_ogs+" — change OGS account";
   },
-  input_ogs_requst(){return "For use bot features send link on your online—go.com account\n";},
+  input_ogs_requst(){return "For use bot features send link on your online-go.com account\n";},
   ogs_id_error(){return "OGS account id not defined. Try another link";},
   ogs_linked_success(args){return "The OGS profile is now linked! Your nickname: <b>"+args[0]+"</b>"},
   my_time(args){
