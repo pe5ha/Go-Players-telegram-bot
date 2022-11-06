@@ -58,7 +58,5 @@ function findRowIn2dRange(array,column,value){
   return -1;
 }
 
-function makeTimeObj(){}
-
 
 

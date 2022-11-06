@@ -20,7 +20,7 @@ function makeTimeObj(){
       this.seconds+=seconds;
       this.shiftTimes();
     },
-  }
+  };
 
   return timeObj;
 }

@@ -27,13 +27,15 @@ function caseCountUserTime(isForPeriod){
     if(toDateMS) toDate = new Date(toDateMS);
   }
  let userTime = countUserTime(user.role,fromDate,toDate);
+ let timeObj = makeTimeObj(); 
+ timeObj.add(userTime.totalSeconds);
  
  if(fromDate){
   if(!toDate) toDate = new Date();
-  mes += BotStrings.get(BotStrings.my_time,userTime.totalCount,userTime.totalHours.toFixed(1),stringDateV2(fromDate,true),stringDateV2(toDate,true)); 
+  mes += BotStrings.get(BotStrings.my_time,userTime.totalCount,timeObj.toString(true),stringDateV2(fromDate,true),stringDateV2(toDate,true)); 
  }
  else{
-  mes += BotStrings.get(BotStrings.my_time,userTime.totalCount,userTime.totalHours.toFixed(1));
+  mes += BotStrings.get(BotStrings.my_time,userTime.totalCount,timeObj.toString(true));
  }
  botSendMessage(chat_id,mes); 
 }
@@ -103,7 +105,7 @@ let endSearchFlag = false;
 function countUserTime(OGS_id,fromDate=null,toDate=null){
   endSearchFlag = false;
   let totalCount = 0;
-  let totalHours = 0;
+  let totalSeconds = 0;
   let i=1;
   do{
     
@@ -113,10 +115,10 @@ function countUserTime(OGS_id,fromDate=null,toDate=null){
     content = JSON.parse(response.getContentText());
     let subTotal = sumGamesTimes(content.results,fromDate,toDate);
     totalCount+=subTotal.count;
-    totalHours+=subTotal.hours;
+    totalSeconds+=subTotal.seconds;
     i++;
   }while(content.next!=null&&(!endSearchFlag));
-  return {totalCount, totalHours};
+  return {totalCount, totalSeconds};
 }
 
 function sumGamesTimes(games,fromDate=null,toDate=null){
@@ -144,8 +146,8 @@ function sumGamesTimes(games,fromDate=null,toDate=null){
       duration_ms+=duration;
     }    
   }
-  let hours = (duration_ms/3600000); // 3600000 is 1 hours in ms
-  return {count, hours};
+  let seconds = (duration_ms/1000); // 1000 is 1 seconds in ms
+  return {count, seconds};
 }
 /**
  * 
