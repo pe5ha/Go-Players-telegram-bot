@@ -23,7 +23,7 @@ function useCases(){
     }
     // нарисовать heatmap
     else if(BotCommands.HEATMAP(text)){
-      let startMonthDate = new Date(); startMonthDate.setDate(1);
+      let startMonthDate = new Date(new Date().getFullYear(),new Date().getMonth(),1);
       caseSendHeatMap(startMonthDate); 
     }
     else if(BotCommands.SWITCH_LANG(text,false)){

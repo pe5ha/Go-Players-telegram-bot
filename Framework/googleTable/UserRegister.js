@@ -25,7 +25,7 @@
   // добавление юзера
   if (row === -1) { // если юзер с таким id не записан, то регистрируем его
     user = makeUser(2,user_id,nick,name,language_code,null,null,true);
-    let userData = [[stringDate(),user.telegramID,user.nick,user.name,user.currentAction,user.role]]; // массив данных пользователя
+    let userData = [[stringDate(),user.telegramID,user.nick,user.name,user.currentAction,user.role,user.language_code]]; // массив данных пользователя
     // userData[0].push(surname); // фамилия
     
     tUsers.use().insertRowBefore(2); // в лист юзеров вставляется новая строка сверху (после заголовков)
