@@ -13,7 +13,6 @@ function caseSendStartMessage(){
 function caseCountUserTime(isForPeriod){
   let mes = "";
   mes+= "<code>" + getOGSNick()+"</code> ";
-  TelegramAPI.sendChatAction(token,chat_id,"typing");
   let fromDate = null;
   let toDate = null;
   if(isForPeriod){
@@ -33,12 +32,24 @@ function caseCountUserTime(isForPeriod){
  }
  botSendMessage(chat_id,mes); 
 }
-
-function caseSendHeatMap(){
-  TelegramAPI.sendChatAction(token,chat_id,"typing");
-  let fromDate = new Date(); fromDate.setDate(1); fromDate.setMonth(fromDate.getMonth()-1); // previos month beginning 
-  let toDate = new Date(fromDate.getTime()); toDate.setMonth(toDate.getMonth()+1); toDate.setDate(toDate.getDate()-1);
-  let gamesCount = getGamesCount(user.role,fromDate,toDate); 
+/**
+ * 
+ * @param {Date} startMonthDate 
+ */
+function caseSendHeatMap(startMonthDate,isRefresh=false){
+  
+  // let fromDate = new Date(); fromDate.setDate(1); //fromDate.setMonth(fromDate.getMonth()-1); // previos month beginning 
+  // let toDate = new Date(fromDate.getTime()); toDate.setMonth(toDate.getMonth()+1); toDate.setDate(toDate.getDate()-1);
+  let fromDate = startMonthDate;
+  let toDate;
+  if(startMonthDate.getMonth()==new Date().getMonth()){
+    toDate = new Date();
+  }
+  else{
+    toDate = new Date(fromDate.getFullYear(),fromDate.getMonth()+1,1);
+  }
+  let daysInMonth = new Date(fromDate.getFullYear(), fromDate.getMonth()+1, 0).getDate();
+  let gamesCount = getGamesCount(user.role,fromDate,toDate,daysInMonth); 
   let dataForHeatMap = {
     data: gamesCount,
     levels: [
@@ -47,17 +58,29 @@ function caseSendHeatMap(){
       { min: 2, max: 4, value: "🟧" },
       { min: 5, max: -1, value: "🟥" }
     ],
-    startDay: fromDate.getDay()-1,
+    startDay: (fromDate.getDay()+6)%7, // чтобы 0 было не Вс, а Пн
     fill: "▫️"
   }
   let mes = "<code>"+getOGSNick()+"</code> ";
-  mes+= BotStrings.get(BotStrings.heatmap_title,stringDateV2(fromDate,true),stringDateV2(toDate,true));
+  mes+= BotStrings.get(BotStrings.heatmap_title,monthNames[fromDate.getMonth()]+" "+fromDate.getFullYear());
 
   let hm = renderHeatMap(dataForHeatMap);
   mes+= hm;
-
-  botSendMessage(chat_id,mes);
-  botSendMessage(chat_id,BotStrings.get(BotStrings.heatmapLegend));
+  let prevMonth = stringDateDash(new Date(fromDate.getFullYear(),fromDate.getMonth()-1,1),true);
+  let currMonth = stringDateDash(new Date(new Date().getFullYear(),new Date().getMonth(),1),true);
+  let nextMonth = stringDateDash(new Date(fromDate.getFullYear(),fromDate.getMonth()+1,1),true);
+  // let keyboard = null;
+  let button_text;
+  if(String(button_title).startsWith("🔁")) button_text = BotStrings.get(BotStrings.refresh_text)+"🔁";
+  else button_text = "🔁"+BotStrings.get(BotStrings.refresh_text);
+  let keyboard = BotStrings.get(BotStrings.heatmap_keyboard,prevMonth,currMonth,nextMonth,button_text);
+  if(!isRefresh){
+    botSendMessage(chat_id,mes,keyboard);
+    botSendMessage(chat_id,BotStrings.get(BotStrings.heatmapLegend));
+  }
+  else{
+    botEditMessage(chat_id,message_id,mes,keyboard);
+  }
 }
 
 function getOGSNick(){
@@ -68,18 +91,24 @@ function getOGSNick(){
 }
 
 
+let endSearchFlag = false;
+
 function countUserTime(OGS_id,fromDate=null,toDate=null){
+  endSearchFlag = false;
   let totalCount = 0;
   let totalHours = 0;
   let i=1;
   do{
-    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?page="+i+"&page_size=100");
+    
+    TelegramAPI.sendChatAction(token,chat_id,"typing");
+
+    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-started&ended__isnull=false&page="+i+"&page_size=100");
     content = JSON.parse(response.getContentText());
     let subTotal = sumGamesTimes(content.results,fromDate,toDate);
     totalCount+=subTotal.count;
     totalHours+=subTotal.hours;
     i++;
-  }while(content.next!=null);
+  }while(content.next!=null&&(!endSearchFlag));
   return {totalCount, totalHours};
 }
 
@@ -95,7 +124,10 @@ function sumGamesTimes(games,fromDate=null,toDate=null){
     let endedDate = new Date(ended);
 
     if(toDate) if(toDate<startDate) continue;
-    if(fromDate) if(startDate<fromDate) continue;
+    if(fromDate) if(startDate<fromDate) {
+      endSearchFlag = true;
+      break;
+    }
 
     // count all games
     count++;
@@ -116,16 +148,19 @@ function sumGamesTimes(games,fromDate=null,toDate=null){
  * @param {Date} toDate 
  * @returns 
  */
-function getGamesCount(OGS_id,fromDate,toDate){
-  let daysInMonth = toDate.getDate();
+function getGamesCount(OGS_id,fromDate,toDate,daysInMonth){
+  endSearchFlag = false;
   let gamesCount = new Array(daysInMonth).fill(0);
   let i=1;
   do{
-    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?page="+i+"&page_size=100");
+
+    TelegramAPI.sendChatAction(token,chat_id,"typing");
+
+    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-started&ended__isnull=false&page="+i+"&page_size=100");
     content = JSON.parse(response.getContentText());
     getGamesCountPart(content.results,fromDate,toDate,gamesCount);
     i++;
-  }while(content.next!=null);
+  }while(content.next!=null&&(!endSearchFlag));
   return gamesCount;
 }
 
@@ -140,7 +175,10 @@ function getGamesCountPart(games,fromDate,toDate,countArray){
     let endedDate = new Date(ended);
 
     if(toDate) if(toDate<startDate) continue;
-    if(fromDate) if(startDate<fromDate) continue;
+    if(fromDate) if(startDate<fromDate) {
+      endSearchFlag = true;
+      break;
+    }
 
     // count games per every date
     countArray[startDate.getDate()-1]++;

@@ -8,24 +8,18 @@ function callbackQueryReceived(callback_query) {
   language_code = callback_query.from.language_code;
   message_id = callback_query.message.message_id;
   data = callback_query.data;
+  text = callback_query.message.text;
+  callback_query.message.reply_markup.inline_keyboard.flat().forEach(e=>{
+    if(e.callback_data==data) {
+      button_title = e.text;
+      return;
+      }
+  });
 
   logUpdate("Кнопка: ", data);
+  
+  // initial user checking
+  userRegister(user_id);
 
-  switch (data) {
-    case ButtonsCallbacks.rules:
-      rulesButtnon();
-      break;
-
-    case ButtonsCallbacks.need_tutor:
-      needTutorButtnon();
-      break;
-
-    case ButtonsCallbacks.lesson_examples:
-      lessonExamplesButtnon();
-      break;
-
-    case ButtonsCallbacks.ask_question:
-      askQuestion();
-      break;
-  }
+  buttonsUseCases();
 }

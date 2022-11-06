@@ -9,6 +9,8 @@ let BotStrings = {
   my_time_hint: "my_time_hint",
   heatmap_title: "heatmap_title",
   heatmapLegend: "heatmapLegend",
+  heatmap_keyboard: "heatmap_keyboard",
+  refresh_text: "refresh_text",
 
   get(key,...args){
     let BotStringsLocale;
@@ -49,9 +51,19 @@ let BotStringsEng = {
   },
   my_time_hint(){return "You can also find out playing time for the specify period. You can send a message in the following format:\n<i>"+
   BotCommands.mytime+" 2022-01-01 2022-02-15</i>"},
-  heatmap_title(args){return "<b>heatmap</b> of Go activity on OGS!\nFrom <i>"+args[0]+"</i> to <i>"+args[1]+"</i>:\n"},
+  heatmap_title(args){return "<b>heatmap</b>! \nGo activity in <i>"+args[0]+"</i>:\n"},
   heatmapLegend(){return "Heatmap legend:\n⬜️ = 0 games played per day\n🟨 = 1 games played per day\n🟧 = 2-4 games played per day\n🟥 = 5+ games played per day"+
-  "\nDays order: mon tue wed thu fri sat sun"}
+  "\nDays order: mon tue wed thu fri sat sun"},
+  heatmap_keyboard(args){
+    return {
+      inline_keyboard: [
+        [{text: "<",callback_data: ButtonsCallbacks.heatmap_update+" "+args[0]},
+        {text: args[3],callback_data: ButtonsCallbacks.heatmap_update+" "+args[1]},
+        {text: ">",callback_data: ButtonsCallbacks.heatmap_update+" "+args[2]}]
+      ]
+    }
+  },
+  refresh_text(){return "Refresh"}
 
 };
 

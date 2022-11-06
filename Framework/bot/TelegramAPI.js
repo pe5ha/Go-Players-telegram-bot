@@ -77,8 +77,7 @@ editMessage(token,chat_id,message_id,txt,keyboard=null){
       reply_markup: keyboard
     }
   };
-  let resp = UrlFetchApp.fetch("https://api.telegram.org/bot"+token+"/", data);
-  return JSON.parse(resp).result.message_id;
+  return sendData(token,data);
 },
 
 // function editMessage(token,chat_id,message_id,txt,keyboard){

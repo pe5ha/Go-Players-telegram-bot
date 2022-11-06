@@ -2,9 +2,6 @@
 
 function directMessage(){
 
-  // initial user checking
-  userRegister(user_id);
-
   // start
   if (text.startsWith("/start ")) { 
     let payload = text.split(" ")[1];

@@ -23,14 +23,14 @@
  * Логирование всего что исходит пользователям ИЗ бота. То есть сообщения от бота
  * @param {String} text - Текст обновления в нужном для таблице виде
  */
-function logBotSending(text) {
+function logBotSending(text,action="") {
   if(doNotLogBotSending) return;
   let tLog = table.getSheetByName(LogSheet.SheetName);
   if(!tLog) return;
 
   tLog.insertRowBefore(2);
   let logdate = date ? stringDate(date*1000) : stringDate();
-  let logData = [[logdate,chat_id,nick,name,"","","",text]];
+  let logData = [[logdate,chat_id,nick,name,"",action,"",text]];
   // TODO chat_id заменить на имя ЧАТА (групповой чат или диалог)
   tLog.getRange(2,1,1,logData[0].length).setValues(logData);
 }

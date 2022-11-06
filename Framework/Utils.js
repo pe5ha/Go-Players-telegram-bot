@@ -18,6 +18,18 @@ function stringDateV2(date, beOnlyDate=false, gmt="GMT+3"){
     return Utilities.formatDate(date, gmt, "dd.MM.yyyy HH:mm:ss");
   }
 }
+function stringDateDash(date,beOnlyDate=false, gmt="GMT+3"){
+  if(beOnlyDate){
+    return Utilities.formatDate(date, gmt, "yyyy-MM-dd");
+  }
+  else {
+    // return Utilities.formatDate(date, gmt, "yyyy-MM-dd HH:mm:ss");
+  }
+}
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
 function getFirstEmptyRow(range){
   let data = range.getValues();
@@ -47,3 +59,6 @@ function findRowIn2dRange(array,column,value){
 }
 
 function makeTimeObj(){}
+
+
+

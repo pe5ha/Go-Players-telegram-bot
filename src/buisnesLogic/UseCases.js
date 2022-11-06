@@ -23,7 +23,8 @@ function useCases(){
     }
     // нарисовать heatmap
     else if(BotCommands.HEATMAP(text)){
-      caseSendHeatMap(); 
+      let startMonthDate = new Date(); startMonthDate.setDate(1);
+      caseSendHeatMap(startMonthDate); 
     }
     
   }

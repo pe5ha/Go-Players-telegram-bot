@@ -4,8 +4,6 @@ function groupChatMessage(message){
   // groups chat disabled
   return;
 
-  // initial user checking
-  userRegister(user_id);
 
   // only start
   if (text == "/start" || text == "/start@"+BotName) {

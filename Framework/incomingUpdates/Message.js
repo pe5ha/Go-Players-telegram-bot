@@ -21,6 +21,8 @@ function messageReceived(message) {
 
   logUpdate("Сообщение: ",text);
 
+  // initial user checking
+  userRegister(user_id);
 
   if (chat_id == user_id) { // сообщения в лс
     directMessage();

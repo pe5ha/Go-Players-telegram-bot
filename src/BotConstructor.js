@@ -34,6 +34,30 @@ function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null,
   return user;
 }
 
+
+let ButtonsCallbacks = {
+  heatmap_left: "heatmap_left",
+  heatmap_right: "heatmap_right",
+  heatmap_update: "heatmap_update",
+
+  
+  HEATMAP_UPDATE(button,whithParam=false){
+    return this.isThisButton(this.heatmap_update,button,whithParam);
+  },
+
+  isThisButton(thisButton,command,whithParam=false){
+    if(whithParam){
+      if(String(command).startsWith(thisButton+" ")||String(command).startsWith(thisButton+"\n")) return true;   
+    }
+    else{
+      if(command==thisButton) return true;
+    }
+    return false;
+  }
+}
+
+
+
 // Bot Commands
 let BotCommands = {
   // start: "/start",
@@ -85,11 +109,6 @@ let AdminActions = {
 let AdminCommands = {
   
 }
-
-let ButtonsCallbacks = {
-
-}
-
 
 
 

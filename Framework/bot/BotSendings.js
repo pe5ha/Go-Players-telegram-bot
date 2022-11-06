@@ -7,15 +7,21 @@
   if(!keyboard) keyboard = { remove_keyboard: true };
 
   let telegramResp = TelegramAPI.sendMessage(token, chat_id, textToSend,keyboard,parsemode,disableWebPagePreview);
-  afterSending(telegramResp);
+  afterSending(telegramResp,"(Бот отправил)");
+}
+function botEditMessage(chat_id,message_id, textToSend,keyboard=null,parsemode="HTML",disableWebPagePreview=false){
+  if(!keyboard) keyboard = { remove_keyboard: true };
+
+  let telegramResp = TelegramAPI.editMessage(token, chat_id,message_id, textToSend,keyboard);
+  afterSending(telegramResp,"(Бот изменил)");
 }
 
-function afterSending(telegramResp){
+function afterSending(telegramResp,action=""){
   if(telegramResp.ok){
     //{ok=true, result={message_id=2502.0, text=mes, date=1.665002153E9, from={is_bot=true, id=2.053644544E9, first_name=Марс бот!!!, username=terraforming_mars_bot}, chat={type=private, username=Pavel_Naumenko, first_name=Павел Науменко, id=2.35733832E8}}}
     let sentMessage = telegramResp.result;
     let sentMessage_id = sentMessage.message_id;
-    logBotSending(sentMessage.text);
+    logBotSending(sentMessage.text,action);
     return true;
   }
   else{ // ошибка отправки

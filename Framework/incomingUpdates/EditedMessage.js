@@ -13,6 +13,10 @@ function editMessageReceived(edited_message){
 
   logUpdate("Сообщение изменено: ", text);
 
+  
+  // initial user checking
+  userRegister(user_id);
+
 
   // if (chat_id == user_id) { // сообщения в лс
   //   directMessage();
