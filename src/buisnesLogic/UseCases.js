@@ -26,6 +26,9 @@ function useCases(){
       let startMonthDate = new Date(); startMonthDate.setDate(1);
       caseSendHeatMap(startMonthDate); 
     }
+    else if(BotCommands.SWITCH_LANG(text,false)){
+      botSendMessage(chat_id,BotStrings.get(BotStrings.switch_lang),BotStrings.get(BotStrings.switch_lang_keyboard));
+    }
     
   }
 

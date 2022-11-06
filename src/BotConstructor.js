@@ -20,10 +20,11 @@ let user = {
   currentAction: null,
   role: null,
   rowInTable: null,
-  isNewUser: null
+  isNewUser: null,
+  language_code: null,
 };
 
-function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null,isNewUser=false){
+function makeUser(rowInTable, telegramID,nick,name,language_code,currentAction=null,role=null,isNewUser=false){
   user.telegramID= telegramID;
   user.nick= nick;
   user.name= name;
@@ -31,18 +32,20 @@ function makeUser(rowInTable, telegramID,nick,name,currentAction=null,role=null,
   user.role= role;
   user.rowInTable= rowInTable;
   user.isNewUser= isNewUser;
+  user.language_code=language_code;
   return user;
 }
 
 
 let ButtonsCallbacks = {
-  heatmap_left: "heatmap_left",
-  heatmap_right: "heatmap_right",
   heatmap_update: "heatmap_update",
+  set_language: "set_language",
 
-  
   HEATMAP_UPDATE(button,whithParam=false){
     return this.isThisButton(this.heatmap_update,button,whithParam);
+  },
+  SET_LANGUAGE(button,whithParam=false){
+    return this.isThisButton(this.set_language,button,whithParam);
   },
 
   isThisButton(thisButton,command,whithParam=false){
@@ -64,6 +67,7 @@ let BotCommands = {
   switch_ogs: "/switch_ogs",
   mytime: "/playing_time",
   heatmap: "/heatmap",
+  switch_lang: "/switch_lang",
 
   SWITCH_OGS(command,whithParam=false){
     return this.isThisCommand(this.switch_ogs,command,whithParam);
@@ -73,6 +77,9 @@ let BotCommands = {
   },
   HEATMAP(command,whithParam=false){
     return this.isThisCommand(this.heatmap,command,whithParam);
+  },
+  SWITCH_LANG(command,whithParam=false){
+    return this.isThisCommand(this.switch_lang,command,whithParam);
   },
   
   isThisCommand(thisCommand,command,whithParam=false){
@@ -121,7 +128,8 @@ let tUsers = {
   name_Title: "имя",
   current_action_Title: "текущее действие",
   role_Title: "OGS",
-  allRange: "A:F",
+  language_code: "язык",
+  allRange: "A:G",
   getColumnsOrder(){
     return [
       this.reg_date_Title,	
@@ -129,7 +137,8 @@ let tUsers = {
       this.nick_Title,	
       this.name_Title,	
       this.current_action_Title, 
-      this.role_Title
+      this.role_Title,
+      this.language_code
     ];
   },
   getCol(columnTitle){

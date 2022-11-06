@@ -1,13 +1,18 @@
 
 function caseSendOGShello(){
-  let OGS_nick = getOGSNick();
-  let mes = BotStrings.get(BotStrings.hello_OGS,OGS_nick);
-  mes+="\n\n";
-  mes+=BotStrings.get(BotStrings.start_message);
+  let mes = buildHelloMes();
   botSendMessage(chat_id,mes);  
 }
 function caseSendStartMessage(){
   botSendMessage(chat_id,BotStrings.get(BotStrings.start_message));  
+}
+
+function buildHelloMes(){
+  let OGS_nick = getOGSNick();
+  let mes = BotStrings.get(BotStrings.hello_OGS,OGS_nick);
+  mes+="\n\n";
+  mes+=BotStrings.get(BotStrings.start_message);
+  return mes;
 }
 
 function caseCountUserTime(isForPeriod){
@@ -69,9 +74,11 @@ function caseSendHeatMap(startMonthDate,isRefresh=false){
   let prevMonth = stringDateDash(new Date(fromDate.getFullYear(),fromDate.getMonth()-1,1),true);
   let currMonth = stringDateDash(new Date(new Date().getFullYear(),new Date().getMonth(),1),true);
   let nextMonth = stringDateDash(new Date(fromDate.getFullYear(),fromDate.getMonth()+1,1),true);
-  // let keyboard = null;
+  
   let button_text;
-  if(String(button_title).startsWith("🔁")) button_text = BotStrings.get(BotStrings.refresh_text)+"🔁";
+  if(contents.update_id%2==0){
+    button_text = BotStrings.get(BotStrings.refresh_text)+"🔁";
+  }
   else button_text = "🔁"+BotStrings.get(BotStrings.refresh_text);
   let keyboard = BotStrings.get(BotStrings.heatmap_keyboard,prevMonth,currMonth,nextMonth,button_text);
   if(!isRefresh){
@@ -132,7 +139,6 @@ function sumGamesTimes(games,fromDate=null,toDate=null){
     // count all games
     count++;
 
-    let gameSpeed = JSON.parse(games[i].time_control_parameters).speed;
     let duration = endedDate-startDate;
     if(duration<(10800000)){ // 10800000 is 3 hours in ms
       duration_ms+=duration;

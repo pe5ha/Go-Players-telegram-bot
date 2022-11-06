@@ -24,7 +24,7 @@ function entryPoint(e){
 
   logDebug(e);
   
-  let contents = JSON.parse(e.postData.contents);
+  contents = JSON.parse(e.postData.contents);
 
   if (contents.message != null) {
     messageReceived(contents.message);

@@ -30,6 +30,8 @@ function setUserCurrentAction(user,currentAction){
   tUsers.use().getRange(user.rowInTable, tUsers.getCol(tUsers.current_action_Title)+1).setValue(currentAction);
 }
 
-function setUserLastStoryId(user,storyId){
-  tUsers.use().getRange(user.rowInTable, tUsers.getCol(tUsers.current_action_Title)+1).setValue(storyId);
+
+function setUserLanguage(user,language_code){
+  user.language_code = language_code;
+  tUsers.use().getRange(user.rowInTable, tUsers.getCol(tUsers.language_code)+1).setValue(language_code);
 }

@@ -57,7 +57,8 @@ copyMessage(token,chat_id,from_chat_id,message_id,keyboard=null){
       from_chat_id: String(from_chat_id),
       message_id: message_id,
       reply_markup: keyboard,
-    }
+    },
+    muteHttpExceptions: true
   };
   return sendData(token,data);
 },
@@ -75,7 +76,8 @@ editMessage(token,chat_id,message_id,txt,keyboard=null){
       text: txt,
       parse_mode: "HTML",
       reply_markup: keyboard
-    }
+    },
+    muteHttpExceptions: true
   };
   return sendData(token,data);
 },
@@ -105,7 +107,8 @@ sendTextAndButtons(token,chat_id,txt,keyboard){
       text: txt,
       parse_mode: "HTML",
       reply_markup: JSON.stringify(keyboard)
-    }
+    },
+    muteHttpExceptions: true
   };
   let resp = UrlFetchApp.fetch("https://api.telegram.org/bot"+token+"/", data);
   let sendMessageId = JSON.parse(resp).result.message_id; 
@@ -176,7 +179,8 @@ sendMessageV3(token,chat_id,text,options){
       parse_mode: parsemode,
       reply_markup: keyboard,
       disable_web_page_preview: disableWebPagePreview
-    }
+    },
+    muteHttpExceptions: true
   };
   return sendData(token,data);
 },
@@ -203,7 +207,8 @@ sendText(token,chat_id,txt){
       chat_id: String(chat_id),
       text: txt,
       parse_mode: "HTML"
-    }
+    },
+    muteHttpExceptions: true
   };
   return sendData(token,data);
 },
@@ -216,7 +221,8 @@ forwardMessage(token,chat_id,from_chat_id,message_id){
       chat_id: String(chat_id),
       from_chat_id: String(from_chat_id),
       message_id: message_id
-    }
+    },
+    muteHttpExceptions: true
   };
   return sendData(token,data);
 },

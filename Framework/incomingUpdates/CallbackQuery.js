@@ -9,12 +9,6 @@ function callbackQueryReceived(callback_query) {
   message_id = callback_query.message.message_id;
   data = callback_query.data;
   text = callback_query.message.text;
-  callback_query.message.reply_markup.inline_keyboard.flat().forEach(e=>{
-    if(e.callback_data==data) {
-      button_title = e.text;
-      return;
-      }
-  });
 
   logUpdate("Кнопка: ", data);
   
