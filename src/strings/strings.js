@@ -57,7 +57,7 @@ let BotStringsEng = {
   "\nYou can also find out the playing time for the specific period. You can send a message in the following format:\n<i>"+
   BotCommands.mytime+" 2022-01-01 2022-02-15</i>"},
   heatmap_title(args){return "<b>heatmap</b>! \nGo activity in <i>"+args[0]+"</i>:\n"},
-  heatmapLegend(){return "Heatmap legend:\n⬜️ = 0 games played per day\n🟨 = 1 games played per day\n🟧 = 2-4 games played per day\n🟥 = 5+ games played per day"+
+  heatmapLegend(){return "On the heatmap, the mark of each game refers to the date of creation of the game.\nHeatmap legend:\n⬜️ = 0 games played per day\n🟨 = 1 games played per day\n🟧 = 2-4 games played per day\n🟥 = 5+ games played per day"+
   "\nDays order: mon tue wed thu fri sat sun"},
   heatmap_keyboard(args){
     return {
@@ -104,7 +104,7 @@ let BotStringsRu = {
   "\nТакже можно узнать наигранное время за определенный период. Нужно отправить сообщение в таком формате:\n<i>"+
   BotCommands.mytime+" 2022-01-01 2022-02-15</i>"},
   heatmap_title(args){return "<b>heatmap</b>! \nГо активность за <i>"+args[0]+"</i>:\n"},
-  heatmapLegend(){return "Обозначения:\n⬜️ = 0 игр за день\n🟨 = 1 игр за день\n🟧 = 2-4 игр за день\n🟥 = 5+ игр за день"+
+  heatmapLegend(){return "На графике отметка каждой игры относится к дате её создания. \nОбозначения:\n⬜️ = 0 игр за день\n🟨 = 1 игр за день\n🟧 = 2-4 игр за день\n🟥 = 5+ игр за день"+
   "\nПорядок дней: пн вт ср чт пт сб вс"},
   heatmap_keyboard(args){
     return {
