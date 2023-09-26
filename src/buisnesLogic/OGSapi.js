@@ -26,6 +26,11 @@ function caseCountUserTime(isForPeriod){
     let toDateMS = Date.parse(text.split(" ")[2]);
     if(toDateMS) toDate = new Date(toDateMS);
   }
+  if(!fromDate){
+    fromDate = new Date();
+    fromDate.setDate(1);
+    fromDate.setHours(0,0,0,0);
+  }
  let userTime = countUserTime(user.role,fromDate,toDate);
  let timeObj = makeTimeObj(); 
  timeObj.add(userTime.totalSeconds);
@@ -111,7 +116,7 @@ function countUserTime(OGS_id,fromDate=null,toDate=null){
     
     TelegramAPI.sendChatAction(token,chat_id,"typing");
 
-    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-started&ended__isnull=false&page="+i+"&page_size=100");
+    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-id&ended__isnull=false&page="+i+"&page_size=100");
     content = JSON.parse(response.getContentText());
     let subTotal = sumGamesTimes(content.results,fromDate,toDate);
     totalCount+=subTotal.count;
@@ -164,7 +169,7 @@ function getGamesCount(OGS_id,fromDate,toDate,daysInMonth){
 
     TelegramAPI.sendChatAction(token,chat_id,"typing");
 
-    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-started&ended__isnull=false&page="+i+"&page_size=100");
+    response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id+"/games?ordering=-id&ended__isnull=false&page="+i+"&page_size=100");
     content = JSON.parse(response.getContentText());
     getGamesCountPart(content.results,fromDate,toDate,gamesCount);
     i++;
