@@ -73,8 +73,8 @@ function caseSendHeatMap(startMonthDate,isRefresh=false){
     startDay: (fromDate.getDay()+6)%7, // чтобы 0 было не Вс, а Пн
     fill: "▫️"
   }
-  let mes = "<code>"+getOGSNick()+"</code> ";
-  mes+= BotStrings.get(BotStrings.heatmap_title,monthNames[fromDate.getMonth()]+" "+fromDate.getFullYear());
+  let mes = "";
+  mes+= BotStrings.get(BotStrings.heatmap_title,getOGSNick(),fromDate.getMonth(),fromDate.getFullYear());
 
   let hm = renderHeatMap(dataForHeatMap);
   mes+= hm;

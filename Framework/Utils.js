@@ -31,6 +31,10 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 
+const monthNamesRus = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+];
+
 function getFirstEmptyRow(range){
   let data = range.getValues();
   for(let i=0;i<data.length;i++){
