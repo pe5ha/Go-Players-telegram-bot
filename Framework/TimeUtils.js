@@ -6,7 +6,7 @@ function makeTimeObj(){
     minutes: 0,
     seconds: 0,
     toString(withoutSec=false){
-      if(withoutSec) return this.hours+"h "+this.minutes+"m ";
+      if(withoutSec) return this.hours+"h "+this.minutes+"m";
       return this.hours+"h "+this.minutes+"m "+this.seconds+"s";
     },
     getTime(){return this.hours*3600+this.minutes*60+this.seconds},

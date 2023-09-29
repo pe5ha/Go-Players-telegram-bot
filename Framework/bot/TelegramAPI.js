@@ -81,6 +81,22 @@ editMessage(token,chat_id,message_id,txt,keyboard=null){
   };
   return sendData(token,data);
 },
+editMessageReplyMarkup(token,chat_id,message_id,keyboard=null){
+  // если без кнопок сообщение то клавиатура null
+  if(keyboard!=null) keyboard = JSON.stringify(keyboard);
+
+  let data={
+    method: "post",
+    payload:{
+      method: "editMessageReplyMarkup",
+      chat_id: String(chat_id),
+      message_id: String(message_id),
+      reply_markup: keyboard
+    },
+    muteHttpExceptions: true
+  };
+  return sendData(token,data);
+},
 
 // function editMessage(token,chat_id,message_id,txt,keyboard){
 //   let data={

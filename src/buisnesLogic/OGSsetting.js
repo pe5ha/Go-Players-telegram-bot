@@ -2,7 +2,7 @@
 function caseSwithOGS(){
   setUserRole(user,UserRoles.without_role);
   setUserCurrentAction(user,UserActions.input_OGS_id);
-  botSendMessage(chat_id,BotStrings.get(BotStrings.INPUT_OGS_REQUST));
+  botSendMessage(chat_id,BotStrings.get(BotStrings.INPUT_OGS_REQUST),null,"HTML",true);
 }
 
 function caseInputOGSid(){
@@ -10,7 +10,7 @@ function caseInputOGSid(){
     caseSettingOGSid();
   }
   else {
-    botSendMessage(chat_id,BotStrings.get(BotStrings.INPUT_OGS_REQUST));
+    botSendMessage(chat_id,BotStrings.get(BotStrings.INPUT_OGS_REQUST),null,"HTML",true);
   }
 }
 

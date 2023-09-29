@@ -23,12 +23,33 @@ function useCases(){
     }
     // нарисовать heatmap
     else if(BotCommands.HEATMAP(text)){
-      let startMonthDate = new Date(new Date().getFullYear(),new Date().getMonth(),1);
-      caseSendHeatMap(startMonthDate); 
+      sendHeatmapAndPlayingTime(user.role);
+    }
+    // показать /info
+    else if(text == "/info"){
+      botSendMessage(chat_id,BotStrings.get(BotStrings.heatmapLegend)+"\n\n"+BotStrings.get(BotStrings.my_time_hint));
+      botSendMessage(chat_id,BotStrings.get(BotStrings.ogslinks_hint),null,"HTML",true);
     }
     else if(BotCommands.SWITCH_LANG(text,false)){
       botSendMessage(chat_id,BotStrings.get(BotStrings.switch_lang),BotStrings.get(BotStrings.switch_lang_keyboard));
     }
+    else if(text.startsWith("https://online-go.com/user/view/")||text.startsWith("https://online-go.com/player/")) {
+      let OGS_id;
+      let matches = text.match(/\d+/);
+      if(matches) {
+        OGS_id = parseInt(matches[0]);
+        let response = UrlFetchApp.fetch("https://online-go.com/api/v1/players"+OGS_id,{muteHttpExceptions: true});
+        if(response.getResponseCode()!=200){
+          botSendMessage(chat_id,BotStrings.get(BotStrings.ogs_id_error));
+          return;
+        }
+        sendHeatmapAndPlayingTime(OGS_id);
+      }
+      else{
+        botSendMessage(chat_id,BotStrings.get(BotStrings.ogs_id_error));
+      }
+    }
+  
     
   }
 

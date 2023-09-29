@@ -40,6 +40,7 @@ function makeUser(rowInTable, telegramID,nick,name,language_code,currentAction=n
 let ButtonsCallbacks = {
   heatmap_update: "heatmap_update",
   set_language: "set_language",
+  save_heatmap: "save_heatmap",
 
   HEATMAP_UPDATE(button,whithParam=false){
     return this.isThisButton(this.heatmap_update,button,whithParam);
@@ -68,6 +69,7 @@ let BotCommands = {
   mytime: "/playing_time",
   heatmap: "/heatmap",
   switch_lang: "/switch_lang",
+  info: "/info",
 
   SWITCH_OGS(command,whithParam=false){
     return this.isThisCommand(this.switch_ogs,command,whithParam);

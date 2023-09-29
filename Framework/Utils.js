@@ -18,13 +18,8 @@ function stringDateV2(date, beOnlyDate=false, gmt="GMT+3"){
     return Utilities.formatDate(date, gmt, "dd.MM.yyyy HH:mm:ss");
   }
 }
-function stringDateDash(date,beOnlyDate=false, gmt="GMT+3"){
-  if(beOnlyDate){
-    return Utilities.formatDate(date, gmt, "yyyy-MM-dd");
-  }
-  else {
-    // return Utilities.formatDate(date, gmt, "yyyy-MM-dd HH:mm:ss");
-  }
+function stringDateDash(date, gmt="GMT+3"){
+  return Utilities.formatDate(date, gmt, "yyyy-MM-dd");
 }
 
 const monthNames = ["January", "February", "March", "April", "May", "June",

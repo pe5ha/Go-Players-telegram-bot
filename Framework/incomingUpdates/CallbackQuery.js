@@ -9,6 +9,7 @@ function callbackQueryReceived(callback_query) {
   message_id = callback_query.message.message_id;
   data = callback_query.data;
   text = callback_query.message.text;
+  reply_markup = callback_query.message.reply_markup;
 
   logUpdate("Кнопка: ", data);
   

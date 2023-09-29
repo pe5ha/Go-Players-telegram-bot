@@ -3,7 +3,7 @@
  */
 
 
- function botSendMessage(chat_id, textToSend,keyboard=null,parsemode="HTML",disableWebPagePreview=false){
+function botSendMessage(chat_id, textToSend,keyboard=null,parsemode="HTML",disableWebPagePreview=false){
   if(!keyboard) keyboard = { remove_keyboard: true };
 
   let telegramResp = TelegramAPI.sendMessage(token, chat_id, textToSend,keyboard,parsemode,disableWebPagePreview);

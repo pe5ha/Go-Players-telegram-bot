@@ -11,6 +11,7 @@ let date;
 let message_id;
 let text = "";
 let data;
+let reply_markup;
 let textToSend;
 let language_code;
 
