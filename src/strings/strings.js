@@ -65,7 +65,7 @@ let BotStringsEng = {
   },
   refresh_text(){return "Refresh"},
   save_button(){return "💾 Save"},
-  ogslinks_hint(){return "You can also send links to the profiles of any players to the bot to view their statistics.\n\n(Links in the format:\nhttps://online-go.com/user/view/512029,\nhttps://online-go.com/player/512029/)"},
+  ogslinks_hint(){return "ℹ️ You can also send links to the profiles of any players to the bot to view their statistics."},
   switch_lang(){return "Select a language"},
   switch_lang_keyboard(){return{
     inline_keyboard: [
@@ -107,6 +107,6 @@ let BotStringsRu = {
   },
   refresh_text(){return "Обновить"},
   save_button(){return "💾 Сохранить"},
-  ogslinks_hint(){return "Вы можете также присылать в бота ссылки на профили любых игроков, чтобы посмотреть их статистику.\n\n(Ссылки такого формата:\nhttps://online-go.com/user/view/512029,\nhttps://online-go.com/player/512029/)"},
+  ogslinks_hint(){return "ℹ️ Вы можете также присылать в бота ссылки на профили любых игроков, чтобы посмотреть их статистику."},
 
 };

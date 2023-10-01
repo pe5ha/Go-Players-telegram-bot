@@ -12,14 +12,9 @@ function useCases(){
     if(BotCommands.SWITCH_OGS(text)){
       caseSwithOGS();
     }
-    // узнать время между датами
-    else if(BotCommands.MYTIME(text,true)){
-      caseCountUserTime(true); 
-    }
     // узнать всё время
     else if(BotCommands.MYTIME(text)){
-      caseCountUserTime(false); 
-      botSendMessage(chat_id,BotStrings.get(BotStrings.my_time_hint));
+      sendHeatmapAndPlayingTime(user.role);
     }
     // нарисовать heatmap
     else if(BotCommands.HEATMAP(text)){
